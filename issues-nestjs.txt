@@ -1,0 +1,211 @@
+title:::Criar repositório no GitHub e configurar .gitignore com Node/Nest
+body:::Parte da Stage 0 – Preparação Inicial
+label:::stage-0
+
+title:::Instalar NestJS CLI: npm i -g @nestjs/cli
+body:::Parte da Stage 0 – Preparação Inicial
+label:::stage-0
+
+title:::Criar app com nest new super-crud
+body:::Parte da Stage 0 – Preparação Inicial
+label:::stage-0
+
+title:::Separar pastas conforme Clean Architecture (core, application, infrastructure, presentation)
+body:::Parte da Stage 0 – Preparação Inicial
+label:::stage-0
+
+title:::Criar docker-compose.yml com MongoDB, Redis e RabbitMQ
+body:::Parte da Stage 0 – Preparação Inicial
+label:::stage-0
+
+title:::Criar .env e configurar com @nestjs/config
+body:::Parte da Stage 0 – Preparação Inicial
+label:::stage-0
+
+title:::Adicionar instruções de setup no README.md
+body:::Parte da Stage 0 – Preparação Inicial
+label:::stage-0
+
+title:::Criar schema/modelo da entidade principal
+body:::Parte da Stage 1 – MongoDB + Repositórios
+label:::stage-1
+
+title:::Criar DTOs com class-validator e class-transformer
+body:::Parte da Stage 1 – MongoDB + Repositórios
+label:::stage-1
+
+title:::Criar interfaces de repositório no domínio (core)
+body:::Parte da Stage 1 – MongoDB + Repositórios
+label:::stage-1
+
+title:::Implementar repositório MongoDB com @nestjs/mongoose
+body:::Parte da Stage 1 – MongoDB + Repositórios
+label:::stage-1
+
+title:::Configurar conexão MongoDB no AppModule com MongooseModule
+body:::Parte da Stage 1 – MongoDB + Repositórios
+label:::stage-1
+
+title:::Criar casos de uso no application/
+body:::Parte da Stage 1 – MongoDB + Repositórios
+label:::stage-1
+
+title:::Criar testes unitários simples com jest
+body:::Parte da Stage 1 – MongoDB + Repositórios
+label:::stage-1
+
+title:::Criar controllers no módulo de apresentação
+body:::Parte da Stage 2 – CRUD + Controllers
+label:::stage-2
+
+title:::Implementar rotas CRUD (POST, GET, PUT, DELETE)
+body:::Parte da Stage 2 – CRUD + Controllers
+label:::stage-2
+
+title:::Validar dados com Pipes e DTOs
+body:::Parte da Stage 2 – CRUD + Controllers
+label:::stage-2
+
+title:::Adicionar tratamento global de erros com ExceptionFilter
+body:::Parte da Stage 2 – CRUD + Controllers
+label:::stage-2
+
+title:::Testar rotas com Postman ou Swagger
+body:::Parte da Stage 2 – CRUD + Controllers
+label:::stage-2
+
+title:::Documentar endpoints com decorators do @nestjs/swagger
+body:::Parte da Stage 2 – CRUD + Controllers
+label:::stage-2
+
+title:::Criar módulo auth/ com controller, service e guards
+body:::Parte da Stage 3 – Autenticação JWT
+label:::stage-3
+
+title:::Implementar login com bcrypt + JWT usando @nestjs/jwt
+body:::Parte da Stage 3 – Autenticação JWT
+label:::stage-3
+
+title:::Criar rotas /login e /register
+body:::Parte da Stage 3 – Autenticação JWT
+label:::stage-3
+
+title:::Criar AuthGuard e RolesGuard personalizados
+body:::Parte da Stage 3 – Autenticação JWT
+label:::stage-3
+
+title:::Proteger rotas com JWT e roles
+body:::Parte da Stage 3 – Autenticação JWT
+label:::stage-3
+
+title:::Adicionar autenticação no Swagger
+body:::Parte da Stage 3 – Autenticação JWT
+label:::stage-3
+
+title:::Configurar Redis com @nestjs/cache-manager e ioredis
+body:::Parte da Stage 4 – Integrações
+label:::stage-4
+
+title:::Criar cache para rotas de listagem
+body:::Parte da Stage 4 – Integrações
+label:::stage-4
+
+title:::Configurar RabbitMQ com @nestjs/microservices
+body:::Parte da Stage 4 – Integrações
+label:::stage-4
+
+title:::Criar Publisher de eventos
+body:::Parte da Stage 4 – Integrações
+label:::stage-4
+
+title:::Criar Consumer com @EventPattern
+body:::Parte da Stage 4 – Integrações
+label:::stage-4
+
+title:::Executar Consumer como microserviço separado ou worker
+body:::Parte da Stage 4 – Integrações
+label:::stage-4
+
+title:::Escrever testes unitários para serviços e casos de uso
+body:::Parte da Stage 5 – Testes
+label:::stage-5
+
+title:::Escrever testes de integração com supertest
+body:::Parte da Stage 5 – Testes
+label:::stage-5
+
+title:::Rodar testes com cobertura usando jest --coverage
+body:::Parte da Stage 5 – Testes
+label:::stage-5
+
+title:::Documentar como rodar testes no README.md
+body:::Parte da Stage 5 – Testes
+label:::stage-5
+
+title:::Criar projeto frontend com React ou similar
+body:::Parte da Stage 6 – Frontend
+label:::stage-6
+
+title:::Consumir endpoints REST com Axios
+body:::Parte da Stage 6 – Frontend
+label:::stage-6
+
+title:::Criar tela de login com JWT
+body:::Parte da Stage 6 – Frontend
+label:::stage-6
+
+title:::Mostrar dados em tabelas com paginação e filtros
+body:::Parte da Stage 6 – Frontend
+label:::stage-6
+
+title:::Adicionar mensagens de erro/sucesso e loading
+body:::Parte da Stage 6 – Frontend
+label:::stage-6
+
+title:::Criar Dockerfile para NestJS
+body:::Parte da Stage 7 – Deploy + Kubernetes
+label:::stage-7
+
+title:::Criar Dockerfile para o frontend
+body:::Parte da Stage 7 – Deploy + Kubernetes
+label:::stage-7
+
+title:::Subir os serviços com docker-compose
+body:::Parte da Stage 7 – Deploy + Kubernetes
+label:::stage-7
+
+title:::Criar manifests Kubernetes (Deployment, Service)
+body:::Parte da Stage 7 – Deploy + Kubernetes
+label:::stage-7
+
+title:::Testar com minikube ou k3s
+body:::Parte da Stage 7 – Deploy + Kubernetes
+label:::stage-7
+
+title:::Expor frontend + backend com Ingress
+body:::Parte da Stage 7 – Deploy + Kubernetes
+label:::stage-7
+
+title:::Adicionar logs com winston ou pino
+body:::Parte da Stage 8 – Observabilidade + Finalização
+label:::stage-8
+
+title:::Integrar com Scalar, Prometheus ou Grafana
+body:::Parte da Stage 8 – Observabilidade + Finalização
+label:::stage-8
+
+title:::Finalizar README com instruções de build, run e deploy
+body:::Parte da Stage 8 – Observabilidade + Finalização
+label:::stage-8
+
+title:::Criar vídeo de demonstração (opcional)
+body:::Parte da Stage 8 – Observabilidade + Finalização
+label:::stage-8
+
+title:::Criar GitHub Project com colunas por etapa
+body:::Parte da Stage 8 – Observabilidade + Finalização
+label:::stage-8
+
+title:::Comemorar e compartilhar o projeto 🎉
+body:::Parte da Stage 8 – Observabilidade + Finalização
+label:::stage-8
