@@ -1,16 +1,15 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ConfigModule } form '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 
 
 @Module({
-	imports: [
-		ConfigModule.forRoot({ isGlobal: true}),
-	],
+  imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
+  ],
+  controllers: [AppController],
+  providers: [AppService],
+})
 
-	controllers: [AppController],
-	providers: [AppService],
-	})
-
-export class AppModule {}
+export class AppModule { }
