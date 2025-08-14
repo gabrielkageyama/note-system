@@ -1,1 +1,5 @@
-
+##Functionalities
+- auth
+- user
+- note 
+- 
