@@ -1,5 +1,7 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import { ForbiddenException, UnauthorizedException, Injectable } from '@nestjs/common';
 import { AuthLoginDto, AuthSignUpDto, AuthUserDto } from './dtos';
+import { ConfigService } from '@nestjs/config'
+import { JwtService } from '@nestjs/jwt';
 import * as argon from 'argon2';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from 'Schemas/user.schema';
@@ -7,33 +9,31 @@ import { Model } from 'mongoose';
 
 @Injectable()
 export class AuthService {
-  constructor(@InjectModel(User.name) private userModel: Model<User>) { }
+  constructor(@InjectModel(User.name) private userModel: Model<User>,
+              private jwt: JwtService,
+              private config: ConfigService){ }
 
-  async login(dto: AuthLoginDto) {
-    const query = this.userModel.where({ username: dto.username });
-    const user = await query.findOne().select('+hashPw');
+  async login(dto: AuthLoginDto) { //update login date
+    const user = await this.userModel.findOne({username:dto.username }).select('+hashPw');
 
-    if (!user)
-      throw new ForbiddenException(
-        'Wrong Credentials'
-      );
+    if (user) {
+      const passwordCheck = await argon.verify(user.hashPw, dto.password);
 
-    const passwordCheck = await argon.verify(user.hashPw, dto.password);
-
-    if (!passwordCheck)
-      throw new ForbiddenException(
-        'Wrong Credentials'
-      )
-
-    const safeUser: AuthUserDto = {
-      username: user.username,
-      email: user.email,
-      notes: user.notes,
-      lastLogin: user.lastLogin,
-    };
-
-    return safeUser;
-
+      if (!passwordCheck) {
+        throw new UnauthorizedException();
+      }else{
+        const safeUser: AuthUserDto = {
+          username: user.username,
+          email: user.email,
+          notes: user.notes,
+          lastLogin: user.lastLogin,
+        };
+        
+        return this.signToken(user._id, user.email);
+      }
+    }else {
+      throw new UnauthorizedException();
+    }
   }
 
   logout() { }
@@ -57,6 +57,20 @@ export class AuthService {
       )
     }
 
+  }
+
+  async signToken(userId: Object, email: string){
+    const payload = {
+      sub: userId,
+      email
+    };
+    const jwtKey = this.config.get('JWT_SECRET');
+
+    const token = await this.jwt.signAsync(payload, { expiresIn: '30m', secret: jwtKey });
+    
+    return {
+      access_token: token,
+    };
   }
 
 }
