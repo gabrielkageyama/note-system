@@ -14,7 +14,7 @@ export class AuthService {
               private config: ConfigService){ }
 
   async login(dto: AuthLoginDto) { //update login date
-    const user = await this.userModel.findOne({username:dto.username }).select('+hashPw');
+    const user = await this.userModel.findOne({ username: dto.username }).select('+hashPw');
 
     if (user) {
       const passwordCheck = await argon.verify(user.hashPw, dto.password);
@@ -26,7 +26,7 @@ export class AuthService {
           username: user.username,
           email: user.email,
           notes: user.notes,
-          lastLogin: user.lastLogin,
+          lastLogin: user.lastLogin, // set a new date here
         };
         
         return this.signToken(user._id, user.email);
