@@ -36,7 +36,7 @@ export class AuthService {
     }
   }
 
-  logout() { }
+  logout() { } // implementar fake? login
 
   async signup(dto: AuthSignUpDto) {
     const hash = await argon.hash(dto.password);
