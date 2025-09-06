@@ -18,6 +18,9 @@ export class AuthService {
 
     if (user) {
       const passwordCheck = await argon.verify(user.hashPw, dto.password);
+      let lastLogin = new Date();
+      await user.updateOne({ 'lastLogin': lastLogin });
+      
 
       if (!passwordCheck) {
         throw new UnauthorizedException();
@@ -26,7 +29,7 @@ export class AuthService {
           username: user.username,
           email: user.email,
           notes: user.notes,
-          lastLogin: user.lastLogin, // set a new date here
+          lastLogin
         };
         
         return this.signToken(user._id, user.email);

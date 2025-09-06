@@ -20,12 +20,21 @@ export class NoteService {
 
     async createNote(user: User, dto: NoteDto) {
         const noteCreator = await this.userModel.findOne({ username: user.username }).select('+hashPw');
+
+        if(!noteCreator){
+            throw new ForbiddenException(
+                'Unable to create note'
+            )
+        }
         
         const note = new this.noteModel ({
             ...dto,
-            noteCreator
+            noteCreator: noteCreator._id
         });
         await note.save();
+        noteCreator.notes.push(note);
+        await noteCreator.save();
+
         return note;
     }
 
