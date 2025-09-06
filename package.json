@@ -8,6 +8,8 @@
   "scripts": {
     "app": "npm run start:dev",
     "doc": "docker-compose rm -s -f -v && docker-compose up -d",
+    "stop:doc": "docker-compose rm -s -f -v",
+    
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
