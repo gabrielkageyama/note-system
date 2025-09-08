@@ -14,7 +14,6 @@ export class Note {
   @Prop({ })
   content: string;
 
-
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true})
   noteCreator: User;
 }

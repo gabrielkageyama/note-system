@@ -57,11 +57,9 @@ export class NoteService {
         return updatedNote;
     }
 
-
     async deleteNote(user: User, noteId: Object) {
         const note = await this.noteModel.findById(noteId);
         
-
         if(!note || note.noteCreator.username != user.username ){ //should be better work with the user id, but because username is also unique i will mantain like this for now
             throw new ForbiddenException (
                 'Unable to delete desired information'

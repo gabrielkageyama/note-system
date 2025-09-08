@@ -1,11 +1,10 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, UseGuards, UseInterceptors } from "@nestjs/common";
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, UseGuards } from "@nestjs/common";
 import { NoteService } from "./note.service";
 import { JwtGuard } from "src/auth/guards";
 import { GetUser } from "src/auth/decorators";
 import { User } from "Schemas/user.schema";
 import { NoteDto, UpdateNoteDto } from "./dto";
 import { ParseObjectIdPipe } from "@nestjs/mongoose";
-
 
 @UseGuards(JwtGuard)
 @Controller('notes')
@@ -24,7 +23,6 @@ export class NoteController {
         return this.noteService.getNote(user, noteId);
     }
 
-
     @HttpCode(HttpStatus.CREATED)
     @Post('create-note')
     createNote( @GetUser() user: User, @Body() dto: NoteDto ) {
@@ -36,7 +34,6 @@ export class NoteController {
     updateNote( @GetUser() user: User, @Body() dto: UpdateNoteDto, @Param('id', ParseObjectIdPipe) noteId: Object ) {
         return this.noteService.updateNote(user, dto, noteId);
     }
-
 
     @HttpCode(HttpStatus.NO_CONTENT)
     @Delete(':id')
