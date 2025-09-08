@@ -1,13 +1,16 @@
-import { ForbiddenException, HttpCode, Injectable } from "@nestjs/common";
+import { ForbiddenException, Inject, Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { Note } from "Schemas/note.schema";
 import { User } from "Schemas/user.schema";
 import { NoteDto, UpdateNoteDto } from "./dto";
+import { CACHE_MANAGER } from "@nestjs/cache-manager";
+import type { Cache } from 'cache-manager';
 
 @Injectable()
 export class NoteService {
-    constructor(@InjectModel(Note.name) private noteModel: Model<Note>,
+    constructor(@Inject(CACHE_MANAGER) private cacheManager:  Cache,
+                @InjectModel(Note.name) private noteModel: Model<Note>,
                 @InjectModel(User.name) private userModel: Model<User>) { }
 
     async getNote(user: User, noteId: Object) {
@@ -15,11 +18,18 @@ export class NoteService {
     }
 
     async getUserNotes(user: User) {
-        return user.notes;
+        const cachedNotes = await this.cacheManager.get('notes');
+        
+        if(!cachedNotes){
+            const cachedNotes = await this.cacheManager.set('notes', {'notes': user.notes})
+            return cachedNotes
+        }
+
+        return cachedNotes;
     }
 
     async createNote(user: User, dto: NoteDto) {
-        const noteCreator = await this.userModel.findOne({ username: user.username }).select('+hashPw');
+        const noteCreator = await this.userModel.findOne({ username: user.username })
 
         if(!noteCreator){
             throw new ForbiddenException(
@@ -29,18 +39,21 @@ export class NoteService {
         
         const note = new this.noteModel ({
             ...dto,
-            noteCreator: noteCreator._id
+            noteCreator: user
         });
+        
         await note.save();
         noteCreator.notes.push(note);
         await noteCreator.save();
-
+        
+        await this.cacheManager.del('notes')
         return note;
     }
 
     async updateNote(user: User, dto: UpdateNoteDto, noteId: Object) {
         const updatedNote = await this.noteModel.findByIdAndUpdate(noteId, {...dto });
-
+        
+        await this.cacheManager.del('notes')
         return updatedNote;
     }
 
@@ -55,6 +68,7 @@ export class NoteService {
             );
         }
 
+        await this.cacheManager.del('notes')
         await note.deleteOne(noteId);
     }
 }

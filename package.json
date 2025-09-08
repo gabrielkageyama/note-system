@@ -9,7 +9,6 @@
     "app": "npm run start:dev",
     "doc": "docker-compose rm -s -f -v && docker-compose up -d",
     "stop:doc": "docker-compose rm -s -f -v",
-    
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
@@ -24,6 +23,8 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@keyv/redis": "^5.1.1",
+    "@nestjs/cache-manager": "^3.0.1",
     "@nestjs/common": "^11.0.1",
     "@nestjs/config": "^4.0.2",
     "@nestjs/core": "^11.0.1",
@@ -32,10 +33,12 @@
     "@nestjs/passport": "^11.0.5",
     "@nestjs/platform-express": "^11.0.1",
     "argon2": "^0.44.0",
+    "cache-manager": "^7.2.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.2",
     "dotenv": "^17.2.1",
     "express": "^5.1.0",
+    "keyv": "^5.5.0",
     "mongoose": "^8.18.0",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",

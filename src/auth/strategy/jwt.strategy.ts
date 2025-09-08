@@ -26,13 +26,6 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt'){
       );
     }
 
-    const safeUser: AuthUserDto = {
-      username: user.username,
-      email: user.email,
-      notes: user.notes,
-      lastLogin: user.lastLogin,
-    };
-
-    return safeUser;
+    return user;
   };
 }
