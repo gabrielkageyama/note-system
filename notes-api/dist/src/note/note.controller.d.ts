@@ -1,9 +1,11 @@
 import { NoteService } from './note.service';
 import { User } from 'Schemas/user.schema';
 import { NoteDto, UpdateNoteDto } from './dto';
+import { ClientProxy } from '@nestjs/microservices';
 export declare class NoteController {
     private noteService;
-    constructor(noteService: NoteService);
+    private clientRMQ;
+    constructor(noteService: NoteService, clientRMQ: ClientProxy);
     getUserNotes(user: User): Promise<{}>;
     getNote(user: User, noteId: Object): Promise<(import("mongoose").Document<unknown, {}, import("../../Schemas/note.schema").Note, {}, {}> & import("../../Schemas/note.schema").Note & {
         _id: import("mongoose").Types.ObjectId;

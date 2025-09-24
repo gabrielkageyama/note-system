@@ -13,7 +13,6 @@ import { NOTIFICATION_SERVICE } from './rabbitConstant';
 export class NoteService {
   constructor(
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
-    @Inject(NOTIFICATION_SERVICE) private rmqClient: ClientProxy,
     @InjectModel(Note.name) private noteModel: Model<Note>,
     @InjectModel(User.name) private userModel: Model<User>,
   ) {}
@@ -50,7 +49,6 @@ export class NoteService {
     });
 
     await note.save();
-    this.rmqClient.emit('note-created', note)
 
     noteCreator.notes.push(note);
     await noteCreator.save();
