@@ -20,14 +20,10 @@ const decorators_1 = require("../auth/decorators");
 const user_schema_1 = require("../../Schemas/user.schema");
 const dto_1 = require("./dto");
 const mongoose_1 = require("@nestjs/mongoose");
-const rabbitConstant_1 = require("./rabbitConstant");
-const microservices_1 = require("@nestjs/microservices");
 let NoteController = class NoteController {
     noteService;
-    clientRMQ;
-    constructor(noteService, clientRMQ) {
+    constructor(noteService) {
         this.noteService = noteService;
-        this.clientRMQ = clientRMQ;
     }
     getUserNotes(user) {
         return this.noteService.getUserNotes(user);
@@ -36,7 +32,6 @@ let NoteController = class NoteController {
         return this.noteService.getNote(user, noteId);
     }
     createNote(user, dto) {
-        this.clientRMQ.emit('note-created', dto_1.NoteDto);
         return this.noteService.createNote(user, dto);
     }
     updateNote(user, dto, noteId) {
@@ -99,7 +94,6 @@ __decorate([
 exports.NoteController = NoteController = __decorate([
     (0, common_1.UseGuards)(guards_1.JwtGuard),
     (0, common_1.Controller)('notes'),
-    __param(1, (0, common_1.Inject)(rabbitConstant_1.NOTIFICATION_SERVICE)),
-    __metadata("design:paramtypes", [note_service_1.NoteService, microservices_1.ClientProxy])
+    __metadata("design:paramtypes", [note_service_1.NoteService])
 ], NoteController);
 //# sourceMappingURL=note.controller.js.map

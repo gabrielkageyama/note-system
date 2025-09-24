@@ -53,12 +53,16 @@ const argon = __importStar(require("argon2"));
 const mongoose_1 = require("@nestjs/mongoose");
 const user_schema_1 = require("../../Schemas/user.schema");
 const mongoose_2 = require("mongoose");
+const rabbitConstants_1 = require("./rabbitConstants");
+const microservices_1 = require("@nestjs/microservices");
 let AuthService = class AuthService {
     userModel;
+    clientRmq;
     jwt;
     config;
-    constructor(userModel, jwt, config) {
+    constructor(userModel, clientRmq, jwt, config) {
         this.userModel = userModel;
+        this.clientRmq = clientRmq;
         this.jwt = jwt;
         this.config = config;
     }
@@ -91,6 +95,7 @@ let AuthService = class AuthService {
                 hashPw: hash,
             });
             await user.save();
+            await this.clientRmq.emit('user-created', user);
             return user;
         }
         catch (err) {
@@ -117,7 +122,9 @@ exports.AuthService = AuthService;
 exports.AuthService = AuthService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, mongoose_1.InjectModel)(user_schema_1.User.name)),
+    __param(1, (0, common_1.Inject)(rabbitConstants_1.NOTIFICATION_SERVICE)),
     __metadata("design:paramtypes", [mongoose_2.Model,
+        microservices_1.ClientProxy,
         jwt_1.JwtService,
         config_1.ConfigService])
 ], AuthService);

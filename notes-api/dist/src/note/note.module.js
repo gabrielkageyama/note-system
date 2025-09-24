@@ -21,7 +21,8 @@ let NoteModule = class NoteModule {
 exports.NoteModule = NoteModule;
 exports.NoteModule = NoteModule = __decorate([
     (0, common_1.Module)({
-        imports: [microservices_1.ClientsModule.registerAsync([
+        imports: [
+            microservices_1.ClientsModule.registerAsync([
                 {
                     imports: [config_1.ConfigModule],
                     name: rabbitConstant_1.NOTIFICATION_SERVICE,
@@ -39,7 +40,8 @@ exports.NoteModule = NoteModule = __decorate([
                 }
             ]),
             mongoose_1.MongooseModule.forFeature([{ name: note_schema_1.Note.name, schema: note_schema_1.NoteSchema }]),
-            mongoose_1.MongooseModule.forFeature([{ name: user_schema_1.User.name, schema: user_schema_1.UserSchema }])],
+            mongoose_1.MongooseModule.forFeature([{ name: user_schema_1.User.name, schema: user_schema_1.UserSchema }])
+        ],
         exports: [mongoose_1.MongooseModule],
         providers: [note_service_1.NoteService],
         controllers: [note_controller_1.NoteController]

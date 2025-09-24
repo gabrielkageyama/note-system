@@ -3,11 +3,13 @@ import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { User } from 'Schemas/user.schema';
 import { Model } from 'mongoose';
+import { ClientProxy } from '@nestjs/microservices';
 export declare class AuthService {
     private userModel;
+    private clientRmq;
     private jwt;
     private config;
-    constructor(userModel: Model<User>, jwt: JwtService, config: ConfigService);
+    constructor(userModel: Model<User>, clientRmq: ClientProxy, jwt: JwtService, config: ConfigService);
     login(dto: AuthLoginDto): Promise<{
         access_token: string;
     }>;

@@ -10,24 +10,25 @@ import { NOTIFICATION_SERVICE } from './rabbitConstant';
 
 
 @Module({
-    imports: [ClientsModule.registerAsync([
-            {
-                imports: [ConfigModule],
-                name: NOTIFICATION_SERVICE,
-                useFactory: async (configService: ConfigService) => ({
-                    transport: Transport.RMQ,
-                    options: {
-                        urls: configService.get('RABBITMQ_URL'),
-                        queue: 'notes-queue',
-                    },
-                    queueOptions: {
-                        durable: true,
-                    }
-                }),
-                inject: [ConfigService]
-            }]),
-              MongooseModule.forFeature([{ name: Note.name, schema: NoteSchema}]),
-              MongooseModule.forFeature([{ name: User.name, schema: UserSchema}])],
+    imports: [
+        ClientsModule.registerAsync([
+        {
+            imports: [ConfigModule],
+            name: NOTIFICATION_SERVICE,
+            useFactory: async (configService: ConfigService) => ({
+                transport: Transport.RMQ,
+                options: {
+                    urls: configService.get('RABBITMQ_URL'),
+                    queue: 'notes-queue',
+                },
+                queueOptions: {
+                    durable: true,
+                }
+            }),
+            inject: [ConfigService]
+        }]),
+        MongooseModule.forFeature([{ name: Note.name, schema: NoteSchema}]),
+        MongooseModule.forFeature([{ name: User.name, schema: UserSchema}])],
     exports: [MongooseModule],
     providers: [NoteService],
     controllers: [NoteController]

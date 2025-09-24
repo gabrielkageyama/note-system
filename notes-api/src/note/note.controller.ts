@@ -17,13 +17,13 @@ import { GetUser } from 'src/auth/decorators';
 import { User } from 'Schemas/user.schema';
 import { NoteDto, UpdateNoteDto } from './dto';
 import { ParseObjectIdPipe } from '@nestjs/mongoose';
-import { NOTIFICATION_SERVICE } from './rabbitConstant';
-import { ClientProxy } from '@nestjs/microservices';
+
+
 
 @UseGuards(JwtGuard)
 @Controller('notes')
 export class NoteController {
-  constructor(private noteService: NoteService, @Inject(NOTIFICATION_SERVICE) private clientRMQ: ClientProxy) {}
+  constructor(private noteService: NoteService) {}
 
   @HttpCode(HttpStatus.OK)
   @Get('user-notes')
@@ -43,7 +43,6 @@ export class NoteController {
   @HttpCode(HttpStatus.CREATED)
   @Post('create-note')
   createNote(@GetUser() user: User, @Body() dto: NoteDto) {
-    this.clientRMQ.emit('note-created', NoteDto);
     return this.noteService.createNote(user, dto);
   }
 

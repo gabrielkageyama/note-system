@@ -3,11 +3,13 @@ import { Note } from 'Schemas/note.schema';
 import { User } from 'Schemas/user.schema';
 import { NoteDto, UpdateNoteDto } from './dto';
 import type { Cache } from 'cache-manager';
+import { ClientProxy } from '@nestjs/microservices';
 export declare class NoteService {
     private cacheManager;
+    private clientRMQ;
     private noteModel;
     private userModel;
-    constructor(cacheManager: Cache, noteModel: Model<Note>, userModel: Model<User>);
+    constructor(cacheManager: Cache, clientRMQ: ClientProxy, noteModel: Model<Note>, userModel: Model<User>);
     getNote(user: User, noteId: Object): Promise<(import("mongoose").Document<unknown, {}, Note, {}, {}> & Note & {
         _id: import("mongoose").Types.ObjectId;
     } & {

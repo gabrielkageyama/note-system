@@ -18,13 +18,18 @@ const mongoose_1 = require("@nestjs/mongoose");
 const mongoose_2 = require("mongoose");
 const note_schema_1 = require("../../Schemas/note.schema");
 const user_schema_1 = require("../../Schemas/user.schema");
+const dto_1 = require("./dto");
 const cache_manager_1 = require("@nestjs/cache-manager");
+const microservices_1 = require("@nestjs/microservices");
+const rabbitConstant_1 = require("./rabbitConstant");
 let NoteService = class NoteService {
     cacheManager;
+    clientRMQ;
     noteModel;
     userModel;
-    constructor(cacheManager, noteModel, userModel) {
+    constructor(cacheManager, clientRMQ, noteModel, userModel) {
         this.cacheManager = cacheManager;
+        this.clientRMQ = clientRMQ;
         this.noteModel = noteModel;
         this.userModel = userModel;
     }
@@ -56,6 +61,7 @@ let NoteService = class NoteService {
         noteCreator.notes.push(note);
         await noteCreator.save();
         await this.cacheManager.del('notes');
+        await this.clientRMQ.emit('note-created', dto_1.NoteDto);
         return note;
     }
     async updateNote(user, dto, noteId) {
@@ -63,6 +69,7 @@ let NoteService = class NoteService {
             ...dto,
         });
         await this.cacheManager.del('notes');
+        await this.clientRMQ.emit('note-updated', updatedNote);
         return updatedNote;
     }
     async deleteNote(user, noteId) {
@@ -78,9 +85,11 @@ exports.NoteService = NoteService;
 exports.NoteService = NoteService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, common_1.Inject)(cache_manager_1.CACHE_MANAGER)),
-    __param(1, (0, mongoose_1.InjectModel)(note_schema_1.Note.name)),
-    __param(2, (0, mongoose_1.InjectModel)(user_schema_1.User.name)),
-    __metadata("design:paramtypes", [Object, mongoose_2.Model,
+    __param(1, (0, common_1.Inject)(rabbitConstant_1.NOTIFICATION_SERVICE)),
+    __param(2, (0, mongoose_1.InjectModel)(note_schema_1.Note.name)),
+    __param(3, (0, mongoose_1.InjectModel)(user_schema_1.User.name)),
+    __metadata("design:paramtypes", [Object, microservices_1.ClientProxy,
+        mongoose_2.Model,
         mongoose_2.Model])
 ], NoteService);
 //# sourceMappingURL=note.service.js.map

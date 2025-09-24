@@ -2,6 +2,7 @@ import {
   ForbiddenException,
   UnauthorizedException,
   Injectable,
+  Inject,
 } from '@nestjs/common';
 import { AuthLoginDto, AuthSignUpDto, AuthUserDto } from './dtos';
 import { ConfigService } from '@nestjs/config';
@@ -10,11 +11,14 @@ import * as argon from 'argon2';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from 'Schemas/user.schema';
 import { Model } from 'mongoose';
+import { NOTIFICATION_SERVICE } from './rabbitConstants';
+import { ClientProxy } from '@nestjs/microservices';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectModel(User.name) private userModel: Model<User>,
+    @Inject(NOTIFICATION_SERVICE) private clientRmq: ClientProxy,
     private jwt: JwtService,
     private config: ConfigService,
   ) {}
@@ -52,6 +56,7 @@ export class AuthService {
       });
 
       await user.save();
+      await this.clientRmq.emit('user-created', user)
       return user;
     } catch (err) {
       console.error('Error creating user:', err);

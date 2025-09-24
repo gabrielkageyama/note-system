@@ -21,8 +21,11 @@ let AppController = class AppController {
     constructor(appService) {
         this.appService = appService;
     }
-    getHello() {
-        return this.appService.getHello();
+    handleUserCreation(user) {
+        console.log('User criado com sucesso, confirmação será enviada por email');
+    }
+    handleNoteUpdate(note) {
+        console.log('Nota editada em breve sera enviado os detalhes por email');
     }
     handleNoteCreation(note) {
         console.log('Nota Criada em breve sera enviada por email a confirmação');
@@ -30,11 +33,19 @@ let AppController = class AppController {
 };
 exports.AppController = AppController;
 __decorate([
-    (0, common_1.Get)(),
+    (0, microservices_1.MessagePattern)('user-created'),
+    __param(0, (0, microservices_1.Payload)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", String)
-], AppController.prototype, "getHello", null);
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], AppController.prototype, "handleUserCreation", null);
+__decorate([
+    (0, microservices_1.MessagePattern)('note-updated'),
+    __param(0, (0, microservices_1.Payload)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], AppController.prototype, "handleNoteUpdate", null);
 __decorate([
     (0, microservices_1.MessagePattern)('note-created'),
     __param(0, (0, microservices_1.Payload)()),

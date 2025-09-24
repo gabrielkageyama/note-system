@@ -1,0 +1,1 @@
+export declare const NOTIFICATION_SERVICE = "NOTIFICATION_SERVICE";
