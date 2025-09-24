@@ -15,6 +15,7 @@ const note_controller_1 = require("./note.controller");
 const user_schema_1 = require("../../Schemas/user.schema");
 const microservices_1 = require("@nestjs/microservices");
 const config_1 = require("@nestjs/config");
+const rabbitConstant_1 = require("./rabbitConstant");
 let NoteModule = class NoteModule {
 };
 exports.NoteModule = NoteModule;
@@ -23,13 +24,16 @@ exports.NoteModule = NoteModule = __decorate([
         imports: [microservices_1.ClientsModule.registerAsync([
                 {
                     imports: [config_1.ConfigModule],
-                    name: 'NOTIFICATION_SERVICE',
+                    name: rabbitConstant_1.NOTIFICATION_SERVICE,
                     useFactory: async (configService) => ({
                         transport: microservices_1.Transport.RMQ,
                         options: {
-                            url: configService.get('RABBITMQ_URL'),
+                            urls: configService.get('RABBITMQ_URL'),
                             queue: 'notes-queue',
                         },
+                        queueOptions: {
+                            durable: true,
+                        }
                     }),
                     inject: [config_1.ConfigService]
                 }

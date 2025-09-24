@@ -6,19 +6,23 @@ import { NoteController } from './note.controller';
 import { User, UserSchema } from 'Schemas/user.schema';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { NOTIFICATION_SERVICE } from './rabbitConstant';
 
 
 @Module({
     imports: [ClientsModule.registerAsync([
             {
                 imports: [ConfigModule],
-                name: 'NOTIFICATION_SERVICE',
+                name: NOTIFICATION_SERVICE,
                 useFactory: async (configService: ConfigService) => ({
                     transport: Transport.RMQ,
                     options: {
-                        url: configService.get('RABBITMQ_URL'),
+                        urls: configService.get('RABBITMQ_URL'),
                         queue: 'notes-queue',
                     },
+                    queueOptions: {
+                        durable: true,
+                    }
                 }),
                 inject: [ConfigService]
             }]),

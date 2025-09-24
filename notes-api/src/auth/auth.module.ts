@@ -5,7 +5,7 @@ import { AuthService } from './auth.service';
 import { UserModule } from 'src/user/user.module';
 import { JwtStrategy } from './strategy';
 
-@Module({
+@Module({ // create here the client to send sign up events
   imports: [UserModule, JwtModule.register({})],
   controllers: [AuthController],
   providers: [AuthService, JwtStrategy],
