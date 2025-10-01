@@ -21,10 +21,11 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   }
 
   async validate(payload: {
-    userId: Object;
+    sub: Object;
     email: string;
   }): Promise<AuthUserDto> {
-    const user = await this.userModel.findOne(payload.userId);
+    
+    const user = await this.userModel.findById(payload.sub);
 
     if (!user) {
       throw new ForbiddenException('Validation failed');

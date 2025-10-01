@@ -1,10 +1,18 @@
 {
   "private": true,
-  "workspaces": ["api-notas", "notification-service"],
+  "workspaces": [
+    "api-notas",
+    "notification-service"
+  ],
   "dependencies": {
+    "@nestjs-modules/mailer": "^2.0.2",
     "@nestjs/config": "^4.0.2",
     "@nestjs/microservices": "^11.1.6",
     "amqp-connection-manager": "^4.1.14",
-    "amqplib": "^0.10.9"
+    "amqplib": "^0.10.9",
+    "nodemailer": "^7.0.6"
+  },
+  "devDependencies": {
+    "@types/nodemailer": "^7.0.2"
   }
 }

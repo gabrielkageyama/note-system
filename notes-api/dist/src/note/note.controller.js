@@ -29,12 +29,15 @@ let NoteController = class NoteController {
         return this.noteService.getUserNotes(user);
     }
     getNote(user, noteId) {
+        console.log(user);
         return this.noteService.getNote(user, noteId);
     }
     createNote(user, dto) {
+        console.log(user);
         return this.noteService.createNote(user, dto);
     }
     updateNote(user, dto, noteId) {
+        console.log(user);
         return this.noteService.updateNote(user, dto, noteId);
     }
     deleteNote(user, noteId) {
@@ -66,7 +69,8 @@ __decorate([
     __param(0, (0, decorators_1.GetUser)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [user_schema_1.User, dto_1.NoteDto]),
+    __metadata("design:paramtypes", [user_schema_1.User,
+        dto_1.NoteDto]),
     __metadata("design:returntype", void 0)
 ], NoteController.prototype, "createNote", null);
 __decorate([

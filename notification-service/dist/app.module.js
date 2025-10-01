@@ -11,6 +11,7 @@ const common_1 = require("@nestjs/common");
 const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
 const config_1 = require("@nestjs/config");
+const mailer_1 = require("@nestjs-modules/mailer");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -19,6 +20,17 @@ exports.AppModule = AppModule = __decorate([
         imports: [
             config_1.ConfigModule.forRoot({
                 isGlobal: true,
+            }),
+            mailer_1.MailerModule.forRootAsync({
+                useFactory: () => ({
+                    transport: {
+                        service: 'gmail',
+                        auth: {
+                            user: process.env.EMAIL,
+                            pass: process.env.EMAIL_PASS
+                        }
+                    }
+                })
             })
         ],
         controllers: [app_controller_1.AppController],

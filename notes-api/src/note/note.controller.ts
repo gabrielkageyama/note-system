@@ -37,12 +37,17 @@ export class NoteController {
     @GetUser() user: User,
     @Param('id', ParseObjectIdPipe) noteId: Object,
   ) {
+    console.log(user)
     return this.noteService.getNote(user, noteId);
   }
 
   @HttpCode(HttpStatus.CREATED)
   @Post('create-note')
-  createNote(@GetUser() user: User, @Body() dto: NoteDto) {
+  createNote(
+    @GetUser() user: User, 
+    @Body() dto: NoteDto
+  ) {
+    console.log(user)
     return this.noteService.createNote(user, dto);
   }
 
@@ -53,6 +58,7 @@ export class NoteController {
     @Body() dto: UpdateNoteDto,
     @Param('id', ParseObjectIdPipe) noteId: Object,
   ) {
+    console.log(user)
     return this.noteService.updateNote(user, dto, noteId);
   }
 

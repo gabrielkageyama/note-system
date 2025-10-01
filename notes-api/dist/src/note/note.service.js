@@ -18,7 +18,6 @@ const mongoose_1 = require("@nestjs/mongoose");
 const mongoose_2 = require("mongoose");
 const note_schema_1 = require("../../Schemas/note.schema");
 const user_schema_1 = require("../../Schemas/user.schema");
-const dto_1 = require("./dto");
 const cache_manager_1 = require("@nestjs/cache-manager");
 const microservices_1 = require("@nestjs/microservices");
 const rabbitConstant_1 = require("./rabbitConstant");
@@ -47,29 +46,27 @@ let NoteService = class NoteService {
         return cachedNotes;
     }
     async createNote(user, dto) {
-        const noteCreator = await this.userModel.findOne({
-            username: user.username,
-        });
-        if (!noteCreator) {
-            throw new common_1.ForbiddenException('Unable to create note');
-        }
         const note = new this.noteModel({
             ...dto,
             noteCreator: user,
         });
         await note.save();
-        noteCreator.notes.push(note);
-        await noteCreator.save();
+        user.notes.push(note);
+        await this.userModel.findOneAndUpdate({ username: user.username }, { notes: user.notes });
         await this.cacheManager.del('notes');
-        await this.clientRMQ.emit('note-created', dto_1.NoteDto);
+        this.clientRMQ.emit('note-created', [note, user]);
         return note;
     }
     async updateNote(user, dto, noteId) {
+        const note = await this.noteModel.findById(noteId);
+        if (!note || note.noteCreator.username != user.username) {
+            throw new common_1.ForbiddenException('Unable to find note');
+        }
         const updatedNote = await this.noteModel.findByIdAndUpdate(noteId, {
             ...dto,
         });
         await this.cacheManager.del('notes');
-        await this.clientRMQ.emit('note-updated', updatedNote);
+        this.clientRMQ.emit('note-updated', [updatedNote, user]);
         return updatedNote;
     }
     async deleteNote(user, noteId) {

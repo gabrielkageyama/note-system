@@ -31,7 +31,7 @@ let JwtStrategy = class JwtStrategy extends (0, passport_1.PassportStrategy)(pas
         this.userModel = userModel;
     }
     async validate(payload) {
-        const user = await this.userModel.findOne(payload.userId);
+        const user = await this.userModel.findById(payload.sub);
         if (!user) {
             throw new common_1.ForbiddenException('Validation failed');
         }

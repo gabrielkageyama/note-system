@@ -22,13 +22,31 @@ let AppController = class AppController {
         this.appService = appService;
     }
     handleUserCreation(user) {
-        console.log('User criado com sucesso, confirmação será enviada por email');
+        this.appService.mailUserCreation();
     }
-    handleNoteUpdate(note) {
-        console.log('Nota editada em breve sera enviado os detalhes por email');
+    handleNoteUpdate(noteAndUser) {
+        const note = noteAndUser[0];
+        const user = noteAndUser[1];
+        const emailOptions = {
+            from: {
+                name: 'Note System',
+                address: process.env.EMAIL
+            },
+            to: user.email,
+            subject: 'One of your notes was updated',
+            text: `Here are the details of the update:
+      
+      Title: ${note.title}
+      User: ${user.username}
+      Updated At: ${note.updatedAt}
+      
+      thx <3
+      byee`
+        };
+        this.appService.mailNoteUpdate(emailOptions);
     }
     handleNoteCreation(note) {
-        console.log('Nota Criada em breve sera enviada por email a confirmação');
+        this.appService.mailNoteCreation();
     }
 };
 exports.AppController = AppController;
@@ -43,7 +61,7 @@ __decorate([
     (0, microservices_1.MessagePattern)('note-updated'),
     __param(0, (0, microservices_1.Payload)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [Array]),
     __metadata("design:returntype", void 0)
 ], AppController.prototype, "handleNoteUpdate", null);
 __decorate([

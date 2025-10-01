@@ -1,5 +1,5 @@
 import { ForbiddenException, Inject, Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
+import { InjectModel, IsObjectIdPipe, ParseObjectIdPipe } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Note } from 'Schemas/note.schema';
 import { User } from 'Schemas/user.schema';
@@ -36,13 +36,7 @@ export class NoteService {
   }
 
   async createNote(user: User, dto: NoteDto) {
-    const noteCreator = await this.userModel.findOne({
-      username: user.username,
-    });
-
-    if (!noteCreator) {
-      throw new ForbiddenException('Unable to create note');
-    }
+    
 
     const note = new this.noteModel({
       ...dto,
@@ -51,21 +45,28 @@ export class NoteService {
 
     await note.save();
 
-    noteCreator.notes.push(note);
-    await noteCreator.save();
+    user.notes.push(note);
+    await this.userModel.findOneAndUpdate({ username: user.username}, { notes: user.notes } );
 
     await this.cacheManager.del('notes');
-    await this.clientRMQ.emit('note-created', NoteDto);
+    this.clientRMQ.emit('note-created', [note, user]);
     return note;
   }
 
   async updateNote(user: User, dto: UpdateNoteDto, noteId: Object) {
+    const note = await this.noteModel.findById(noteId);
+    
+    if (!note || note.noteCreator.username != user.username) {
+      //should be better to work with the user id, but because username is also unique i will mantain like this for now
+      throw new ForbiddenException('Unable to find note');
+    }
+    
     const updatedNote = await this.noteModel.findByIdAndUpdate(noteId, {
       ...dto,
     });
 
     await this.cacheManager.del('notes');
-    await this.clientRMQ.emit('note-updated', updatedNote)
+    this.clientRMQ.emit('note-updated', [updatedNote, user])
     return updatedNote;
   }
 
