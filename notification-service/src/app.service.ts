@@ -5,7 +5,7 @@ import { Injectable } from '@nestjs/common';
 export class AppService {
   constructor(private mailService: MailerService) {}
 
-  async mailNoteUpdate(emailOptions){
+  async sendEmail(emailOptions){
     
     try {
 
@@ -20,11 +20,5 @@ export class AppService {
     
   }
 
-  mailNoteCreation(){
-    console.log('Nota Criada em breve sera enviada por email a confirmação');
-  }
-
-  mailUserCreation(){
-    console.log('User criado com sucesso, confirmação será enviada por email')
-  }
+  
 }

@@ -66,7 +66,7 @@ export class NoteService {
     });
 
     await this.cacheManager.del('notes');
-    this.clientRMQ.emit('note-updated', [updatedNote, user])
+    this.clientRMQ.emit('note-updated', [updatedNote, user, dto])
     return updatedNote;
   }
 
